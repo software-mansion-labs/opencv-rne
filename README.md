@@ -1,1 +1,1 @@
-# RNExecuTorch-opencv2
+# opencv2-rne

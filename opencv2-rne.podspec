@@ -1,12 +1,12 @@
 Pod::Spec.new do |s|
-    s.name = "opencv2-rne"
+    s.name = "opencv-rne"
     s.version = "0.1.0"
-    s.summary = "OpenCV2 for iOS, compatible with react-native-executorch."
-    s.homepage = "https://github.com/software-mansion-labs/opencv2-rne.git"
+    s.summary = "OpenCV for iOS, compatible with react-native-executorch."
+    s.homepage = "https://github.com/software-mansion-labs/opencv-rne.git"
     s.authors = { "Jakub Mroz" => "jakub.mroz@swmansion.com" }
     s.license = { :type => 'Apache License 2.0', :file => 'LICENSE' }
     s.source = { 
-      :git => "https://github.com/software-mansion-labs/opencv2-rne.git", 
+      :git => "https://github.com/software-mansion-labs/opencv-rne.git", 
       :tag => "#{s.version}"
     }
     s.platform = :ios

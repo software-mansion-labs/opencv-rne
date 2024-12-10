@@ -1,1 +1,1 @@
-# opencv2-rne
+# opencv-rne

@@ -100,8 +100,8 @@ inline Size _InputArray::getSz() const { return sz; }
 
 inline _InputArray::_InputArray() { init(0 + NONE, 0); }
 inline _InputArray::_InputArray(int _flags, void* _obj) { init(_flags, _obj); }
-inline _InputArray::_InputArray(const Mat& m) { init(MAT+ACCESS_READ, &m); }
-inline _InputArray::_InputArray(const std::vector<Mat>& vec) { init(STD_VECTOR_MAT+ACCESS_READ, &vec); }
+inline _InputArray::_InputArray(const Mat& m) { init(+MAT+ACCESS_READ, &m); }
+inline _InputArray::_InputArray(const std::vector<Mat>& vec) { init(+STD_VECTOR_MAT+ACCESS_READ, &vec); }
 
 template<typename _Tp> inline
 _InputArray::_InputArray(const std::vector<_Tp>& vec)
@@ -113,7 +113,7 @@ _InputArray::_InputArray(const std::array<_Tp, _Nm>& arr)
 
 template<std::size_t _Nm> inline
 _InputArray::_InputArray(const std::array<Mat, _Nm>& arr)
-{ init(STD_ARRAY_MAT + ACCESS_READ, arr.data(), Size(1, _Nm)); }
+{ init(+STD_ARRAY_MAT + ACCESS_READ, arr.data(), Size(1, _Nm)); }
 
 inline
 _InputArray::_InputArray(const std::vector<bool>& vec)
@@ -179,10 +179,10 @@ inline bool _InputArray::isVector() const { return kind() == _InputArray::STD_VE
 
 ////////////////////////////////////////////////////////////////////////////////////////
 
-inline _OutputArray::_OutputArray() { init(NONE + ACCESS_WRITE, 0); }
+inline _OutputArray::_OutputArray() { init(+NONE + ACCESS_WRITE, 0); }
 inline _OutputArray::_OutputArray(int _flags, void* _obj) { init(_flags + ACCESS_WRITE, _obj); }
-inline _OutputArray::_OutputArray(Mat& m) { init(MAT+ACCESS_WRITE, &m); }
-inline _OutputArray::_OutputArray(std::vector<Mat>& vec) { init(STD_VECTOR_MAT + ACCESS_WRITE, &vec); }
+inline _OutputArray::_OutputArray(Mat& m) { init(+MAT+ACCESS_WRITE, &m); }
+inline _OutputArray::_OutputArray(std::vector<Mat>& vec) { init(+STD_VECTOR_MAT + ACCESS_WRITE, &vec); }
 
 template<typename _Tp> inline
 _OutputArray::_OutputArray(std::vector<_Tp>& vec)
@@ -194,7 +194,7 @@ _OutputArray::_OutputArray(std::array<_Tp, _Nm>& arr)
 
 template<std::size_t _Nm> inline
 _OutputArray::_OutputArray(std::array<Mat, _Nm>& arr)
-{ init(STD_ARRAY_MAT + ACCESS_WRITE, arr.data(), Size(1, _Nm)); }
+{ init(+STD_ARRAY_MAT + ACCESS_WRITE, arr.data(), Size(1, _Nm)); }
 
 template<typename _Tp> inline
 _OutputArray::_OutputArray(std::vector<std::vector<_Tp> >& vec)
@@ -277,8 +277,8 @@ _OutputArray _OutputArray::rawOut(std::array<_Tp, _Nm>& arr)
 
 inline _InputOutputArray::_InputOutputArray() { init(0+ACCESS_RW, 0); }
 inline _InputOutputArray::_InputOutputArray(int _flags, void* _obj) { init(_flags+ACCESS_RW, _obj); }
-inline _InputOutputArray::_InputOutputArray(Mat& m) { init(MAT+ACCESS_RW, &m); }
-inline _InputOutputArray::_InputOutputArray(std::vector<Mat>& vec) { init(STD_VECTOR_MAT+ACCESS_RW, &vec); }
+inline _InputOutputArray::_InputOutputArray(Mat& m) { init(+MAT+ACCESS_RW, &m); }
+inline _InputOutputArray::_InputOutputArray(std::vector<Mat>& vec) { init(+STD_VECTOR_MAT+ACCESS_RW, &vec); }
 
 template<typename _Tp> inline
 _InputOutputArray::_InputOutputArray(std::vector<_Tp>& vec)
@@ -290,7 +290,7 @@ _InputOutputArray::_InputOutputArray(std::array<_Tp, _Nm>& arr)
 
 template<std::size_t _Nm> inline
 _InputOutputArray::_InputOutputArray(std::array<Mat, _Nm>& arr)
-{ init(STD_ARRAY_MAT + ACCESS_RW, arr.data(), Size(1, _Nm)); }
+{ init(+STD_ARRAY_MAT + ACCESS_RW, arr.data(), Size(1, _Nm)); }
 
 template<typename _Tp> inline
 _InputOutputArray::_InputOutputArray(std::vector<std::vector<_Tp> >& vec)
@@ -380,7 +380,7 @@ CV__DEBUG_NS_END
 
 template<typename _Tp> inline
 Mat::Mat(const std::vector<_Tp>& vec, bool copyData)
-    : flags(MAGIC_VAL + traits::Type<_Tp>::value + CV_MAT_CONT_FLAG), dims(2), rows((int)vec.size()),
+    : flags(+MAGIC_VAL + traits::Type<_Tp>::value + CV_MAT_CONT_FLAG), dims(2), rows((int)vec.size()),
       cols(1), data(0), datastart(0), dataend(0), datalimit(0), allocator(0), u(0), size(&rows), step(0)
 {
     if(vec.empty())
@@ -417,7 +417,7 @@ Mat::Mat(const std::initializer_list<int> sizes, const std::initializer_list<_Tp
 
 template<typename _Tp, std::size_t _Nm> inline
 Mat::Mat(const std::array<_Tp, _Nm>& arr, bool copyData)
-    : flags(MAGIC_VAL + traits::Type<_Tp>::value + CV_MAT_CONT_FLAG), dims(2), rows((int)arr.size()),
+    : flags(+MAGIC_VAL + traits::Type<_Tp>::value + CV_MAT_CONT_FLAG), dims(2), rows((int)arr.size()),
       cols(1), data(0), datastart(0), dataend(0), datalimit(0), allocator(0), u(0), size(&rows), step(0)
 {
     if(arr.empty())
@@ -434,7 +434,7 @@ Mat::Mat(const std::array<_Tp, _Nm>& arr, bool copyData)
 
 template<typename _Tp, int n> inline
 Mat::Mat(const Vec<_Tp, n>& vec, bool copyData)
-    : flags(MAGIC_VAL + traits::Type<_Tp>::value + CV_MAT_CONT_FLAG), dims(2), rows(n), cols(1), data(0),
+    : flags(+MAGIC_VAL + traits::Type<_Tp>::value + CV_MAT_CONT_FLAG), dims(2), rows(n), cols(1), data(0),
       datastart(0), dataend(0), datalimit(0), allocator(0), u(0), size(&rows), step(0)
 {
     if( !copyData )
@@ -450,7 +450,7 @@ Mat::Mat(const Vec<_Tp, n>& vec, bool copyData)
 
 template<typename _Tp, int m, int n> inline
 Mat::Mat(const Matx<_Tp,m,n>& M, bool copyData)
-    : flags(MAGIC_VAL + traits::Type<_Tp>::value + CV_MAT_CONT_FLAG), dims(2), rows(m), cols(n), data(0),
+    : flags(+MAGIC_VAL + traits::Type<_Tp>::value + CV_MAT_CONT_FLAG), dims(2), rows(m), cols(n), data(0),
       datastart(0), dataend(0), datalimit(0), allocator(0), u(0), size(&rows), step(0)
 {
     if( !copyData )
@@ -466,7 +466,7 @@ Mat::Mat(const Matx<_Tp,m,n>& M, bool copyData)
 
 template<typename _Tp> inline
 Mat::Mat(const Point_<_Tp>& pt, bool copyData)
-    : flags(MAGIC_VAL + traits::Type<_Tp>::value + CV_MAT_CONT_FLAG), dims(2), rows(2), cols(1), data(0),
+    : flags(+MAGIC_VAL + traits::Type<_Tp>::value + CV_MAT_CONT_FLAG), dims(2), rows(2), cols(1), data(0),
       datastart(0), dataend(0), datalimit(0), allocator(0), u(0), size(&rows), step(0)
 {
     if( !copyData )
@@ -485,7 +485,7 @@ Mat::Mat(const Point_<_Tp>& pt, bool copyData)
 
 template<typename _Tp> inline
 Mat::Mat(const Point3_<_Tp>& pt, bool copyData)
-    : flags(MAGIC_VAL + traits::Type<_Tp>::value + CV_MAT_CONT_FLAG), dims(2), rows(3), cols(1), data(0),
+    : flags(+MAGIC_VAL + traits::Type<_Tp>::value + CV_MAT_CONT_FLAG), dims(2), rows(3), cols(1), data(0),
       datastart(0), dataend(0), datalimit(0), allocator(0), u(0), size(&rows), step(0)
 {
     if( !copyData )
@@ -505,7 +505,7 @@ Mat::Mat(const Point3_<_Tp>& pt, bool copyData)
 
 template<typename _Tp> inline
 Mat::Mat(const MatCommaInitializer_<_Tp>& commaInitializer)
-    : flags(MAGIC_VAL + traits::Type<_Tp>::value + CV_MAT_CONT_FLAG), dims(0), rows(0), cols(0), data(0),
+    : flags(+MAGIC_VAL + traits::Type<_Tp>::value + CV_MAT_CONT_FLAG), dims(0), rows(0), cols(0), data(0),
       datastart(0), dataend(0), allocator(0), u(0), size(&rows)
 {
     *this = commaInitializer.operator Mat_<_Tp>();
@@ -2010,7 +2010,7 @@ SparseMatConstIterator_<_Tp> SparseMat::end() const
 template<typename _Tp> inline
 SparseMat_<_Tp>::SparseMat_()
 {
-    flags = MAGIC_VAL + traits::Type<_Tp>::value;
+    flags = +MAGIC_VAL + traits::Type<_Tp>::value;
 }
 
 template<typename _Tp> inline
